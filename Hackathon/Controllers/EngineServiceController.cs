@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Hackathon.Model;
 using Hackathon.Model.Services;
@@ -19,10 +21,25 @@ namespace Hackathon.Controllers
         }
 
         // GET: EngineService/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(Guid id)
         {
-            return View();
-        }
+			try
+			{
+				using (HttpClient client = new HttpClient())
+				{
+					client.BaseAddress = new Uri("http://localhost:5000");
+					client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+					var response = client.GetAsync("/service/GetEngineService" + $"/{id}").Result;
+					string stringData = response.Content.ReadAsStringAsync().Result;
+					var myDeserialized = (EngineService)JsonConvert.DeserializeObject(stringData, typeof(EngineService));
+					return View(myDeserialized);
+				}
+			}
+			catch
+			{
+				return View();
+			}
+		}
 
         // GET: EngineService/Create
         public ActionResult Create()

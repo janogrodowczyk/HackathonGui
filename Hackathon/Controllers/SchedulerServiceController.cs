@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Hackathon.Model;
 using Hackathon.Model.Services;
@@ -22,7 +23,22 @@ namespace Hackathon.Controllers
 		// GET: SchedulerService/Details/5
 		public ActionResult Details(int id)
 		{
-			return View();
+			try
+			{
+				using (HttpClient client = new HttpClient())
+				{
+					client.BaseAddress = new Uri("http://localhost:5000");
+					client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+					var response = client.GetAsync("/service/GetSchedulerService" + $"/{id}").Result;
+					string stringData = response.Content.ReadAsStringAsync().Result;
+					var myDeserialized = (SchedulerService)JsonConvert.DeserializeObject(stringData, typeof(SchedulerService));
+					return View(myDeserialized);
+				}
+			}
+			catch
+			{
+				return View();
+			}
 		}
 
 		// GET: SchedulerService/Create
