@@ -29,9 +29,6 @@
                 <th>
                     @Html.DisplayNameFor(model => model.ModifiedByUserName)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.IdentifiedInternally)
-                </th>
             <th></th>
         </tr>
     </thead>
@@ -52,9 +49,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ModifiedByUserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdentifiedInternally)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", "ServiceCluster", new {id=item.Id }) 

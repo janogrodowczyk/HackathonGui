@@ -15,16 +15,19 @@ namespace Hackathon.Controllers
     public class ServiceController : Controller
     {
         // GET: Service
-        public ActionResult Index()
+        public async System.Threading.Tasks.Task<ActionResult> Index()
         {
+	        List<ServiceViewModel> serviceViewModels = new List<ServiceViewModel>();
 			using (HttpClient client = new HttpClient())
 			{
 				client.BaseAddress = new Uri("http://localhost:5000");
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-				HttpResponseMessage response = client.GetAsync("/service/GetAllByType?serviceType=Engine&serviceType=Proxy&serviceType=Scheduler&serviceType=Engine&serviceType=AppMigration&serviceType=Printing").Result;
-				string stringData = response.Content.ReadAsStringAsync().Result;
-				List<ServiceViewModel> serviceViewModels =
-					Helpers.ToServiceViewModel((List<dynamic>) JsonConvert.DeserializeObject(stringData, typeof(List<dynamic>)));
+				foreach (var type in new [] { "Engine", "Proxy", "Scheduler", "AppMigration", "Printing", "Repository" })
+				{
+					var response = await client.GetAsync($"/service/GetAllByType?serviceType={type}");
+					string stringData = response.Content.ReadAsStringAsync().Result;
+					serviceViewModels.AddRange(Helpers.ToServiceViewModel((List<dynamic>)JsonConvert.DeserializeObject(stringData, typeof(List<dynamic>))));
+				}
 				return View(serviceViewModels);
 			}
 		}
@@ -110,10 +113,19 @@ namespace Hackathon.Controllers
         }
 
         // GET: Service/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(Guid id)
         {
-            return View();
-        }
+			using (HttpClient client = new HttpClient())
+			{
+				client.BaseAddress = new Uri("http://localhost:5000");
+				MediaTypeWithQualityHeaderValue contentType = new MediaTypeWithQualityHeaderValue("application/json");
+				client.DefaultRequestHeaders.Accept.Add(contentType);
+				HttpResponseMessage response = client.DeleteAsync("/service/delete" + $"/{id}").Result;
+				string stringData = response.Content.ReadAsStringAsync().Result;
+				var myDeserialized = (ServiceCluster)JsonConvert.DeserializeObject(stringData, typeof(ServiceCluster));
+				return RedirectToAction("Index");
+			}
+		}
 
         // POST: Service/Delete/5
         [HttpPost]
