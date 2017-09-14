@@ -1,0 +1,60 @@
+<link rel="stylesheet" href="~/css/bootstrap.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+<link href="~/css/Personal.css" rel="stylesheet" />
+@using System.Collections.Generic
+@model System.Collections.Generic.IEnumerable<Hackathon.Model.ServiceViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+	<li><a href="~/EngineService/Create">Create Engine</a></li>
+	<li><a href="~/PrintingService/Create">Create Printing</a></li>
+	<li><a href="~/ProxyService/Create">Create Proxy</a></li>
+	<li><a href="~/RepositoryService/Create">Create Repository</a></li>
+	<li><a href="~/SchedulerService/Create">Create Scheduler</a></li>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ServiceType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HostName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ServiceCluster)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HostName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceCluster)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) 
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) 
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

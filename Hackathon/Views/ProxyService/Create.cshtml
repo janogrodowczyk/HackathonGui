@@ -1,0 +1,184 @@
+<link rel="stylesheet" href="~/css/bootstrap.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+<link href="~/css/Personal.css" rel="stylesheet" />
+@model Hackathon.Model.ProxyServiceViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+<body>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>ProxyService</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="ServiceClusterName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ServiceClusterName" class="form-control" />
+                <span asp-validation-for="ServiceClusterName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ServiceClusterId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ServiceClusterId" class="form-control" />
+                <span asp-validation-for="ServiceClusterId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ListenPort" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ListenPort" class="form-control" />
+                <span asp-validation-for="ListenPort" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="AllowHttp" />
+                    <label asp-for="AllowHttp"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="UnencryptedListenPort" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="UnencryptedListenPort" class="form-control" />
+                <span asp-validation-for="UnencryptedListenPort" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AuthenticationListenPort" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="AuthenticationListenPort" class="form-control" />
+                <span asp-validation-for="AuthenticationListenPort" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="KerberosAuthentication" />
+                    <label asp-for="KerberosAuthentication"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SslBrowserCertificateThumbprint" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="SslBrowserCertificateThumbprint" class="form-control" />
+                <span asp-validation-for="SslBrowserCertificateThumbprint" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="KeepAliveTimeoutSeconds" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="KeepAliveTimeoutSeconds" class="form-control" />
+                <span asp-validation-for="KeepAliveTimeoutSeconds" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MaxHeaderSizeBytes" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="MaxHeaderSizeBytes" class="form-control" />
+                <span asp-validation-for="MaxHeaderSizeBytes" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MaxHeaderLines" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="MaxHeaderLines" class="form-control" />
+                <span asp-validation-for="MaxHeaderLines" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="UseWsTrace" />
+                    <label asp-for="UseWsTrace"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PerformanceLoggingInterval" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PerformanceLoggingInterval" class="form-control" />
+                <span asp-validation-for="PerformanceLoggingInterval" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="RestListenPort" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="RestListenPort" class="form-control" />
+                <span asp-validation-for="RestListenPort" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="FormAuthenticationPageTemplate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="FormAuthenticationPageTemplate" class="form-control" />
+                <span asp-validation-for="FormAuthenticationPageTemplate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LoggedOutPageTemplate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LoggedOutPageTemplate" class="form-control" />
+                <span asp-validation-for="LoggedOutPageTemplate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ErrorPageTemplate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ErrorPageTemplate" class="form-control" />
+                <span asp-validation-for="ErrorPageTemplate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="HostName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="HostName" class="form-control" />
+                <span asp-validation-for="HostName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ModifiedByUserName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ModifiedByUserName" class="form-control" />
+                <span asp-validation-for="ModifiedByUserName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IdentifiedInternally" />
+                    <label asp-for="IdentifiedInternally"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+</body>
+</html>

@@ -1,0 +1,22 @@
+c:\users\axg\documents\visual studio 2017\Projects\Hackathon\Hackathon\bin\Debug\netcoreapp1.1\Hackathon.deps.json
+c:\users\axg\documents\visual studio 2017\Projects\Hackathon\Hackathon\bin\Debug\netcoreapp1.1\Hackathon.runtimeconfig.json
+c:\users\axg\documents\visual studio 2017\Projects\Hackathon\Hackathon\bin\Debug\netcoreapp1.1\Hackathon.runtimeconfig.dev.json
+c:\users\axg\documents\visual studio 2017\Projects\Hackathon\Hackathon\bin\Debug\netcoreapp1.1\Hackathon.dll
+c:\users\axg\documents\visual studio 2017\Projects\Hackathon\Hackathon\obj\Debug\netcoreapp1.1\Hackathon.csprojResolveAssemblyReference.cache
+c:\users\axg\documents\visual studio 2017\Projects\Hackathon\Hackathon\obj\Debug\netcoreapp1.1\Hackathon.csproj.CoreCompileInputs.cache
+c:\users\axg\documents\visual studio 2017\Projects\Hackathon\Hackathon\obj\Debug\netcoreapp1.1\Hackathon.AssemblyInfoInputs.cache
+c:\users\axg\documents\visual studio 2017\Projects\Hackathon\Hackathon\obj\Debug\netcoreapp1.1\Hackathon.AssemblyInfo.cs
+c:\users\axg\documents\visual studio 2017\Projects\Hackathon\Hackathon\bin\Debug\netcoreapp1.1\Hackathon.pdb
+c:\users\axg\documents\visual studio 2017\Projects\Hackathon\Hackathon\obj\Debug\netcoreapp1.1\Hackathon.dll
+c:\users\axg\documents\visual studio 2017\Projects\Hackathon\Hackathon\obj\Debug\netcoreapp1.1\Hackathon.pdb
+C:\Users\axg\Git\HackathonGui\Hackathon\bin\Debug\netcoreapp1.1\Hackathon.deps.json
+C:\Users\axg\Git\HackathonGui\Hackathon\bin\Debug\netcoreapp1.1\Hackathon.runtimeconfig.json
+C:\Users\axg\Git\HackathonGui\Hackathon\bin\Debug\netcoreapp1.1\Hackathon.runtimeconfig.dev.json
+C:\Users\axg\Git\HackathonGui\Hackathon\bin\Debug\netcoreapp1.1\Hackathon.dll
+C:\Users\axg\Git\HackathonGui\Hackathon\bin\Debug\netcoreapp1.1\Hackathon.pdb
+C:\Users\axg\Git\HackathonGui\Hackathon\obj\Debug\netcoreapp1.1\Hackathon.csprojResolveAssemblyReference.cache
+C:\Users\axg\Git\HackathonGui\Hackathon\obj\Debug\netcoreapp1.1\Hackathon.csproj.CoreCompileInputs.cache
+C:\Users\axg\Git\HackathonGui\Hackathon\obj\Debug\netcoreapp1.1\Hackathon.AssemblyInfoInputs.cache
+C:\Users\axg\Git\HackathonGui\Hackathon\obj\Debug\netcoreapp1.1\Hackathon.AssemblyInfo.cs
+C:\Users\axg\Git\HackathonGui\Hackathon\obj\Debug\netcoreapp1.1\Hackathon.dll
+C:\Users\axg\Git\HackathonGui\Hackathon\obj\Debug\netcoreapp1.1\Hackathon.pdb
