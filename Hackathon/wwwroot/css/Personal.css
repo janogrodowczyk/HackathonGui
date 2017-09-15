@@ -34,6 +34,13 @@ textarea {
     padding: 5px;
     width: 300px;
 }
+dd {
+    border-style: solid;
+    border-radius: 10px;
+    background-color: #ddd;
+    padding: 5px;
+    width: 500px;
+}
 a {
     color: #A9E27D;
     padding-left: 1pc;

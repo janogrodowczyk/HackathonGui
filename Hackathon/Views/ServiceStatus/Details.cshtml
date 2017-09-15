@@ -1,0 +1,81 @@
+<link rel="stylesheet" href="~/css/bootstrap.css" />
+<link rel="stylesheet" href="~/css/site.css" />
+<link href="~/css/Personal.css" rel="stylesheet" />
+@model Hackathon.Model.Services.ServiceStatus
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ServiceStatus</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.HostName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HostName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ServiceType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ServiceId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.State)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.State)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeStamp)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TimeStamp)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedByUserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedByUserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IdentifiedInternally)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IdentifiedInternally)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

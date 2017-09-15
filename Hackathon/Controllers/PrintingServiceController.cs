@@ -21,7 +21,7 @@ namespace Hackathon.Controllers
 		}
 
         // GET: PrintingService/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(Guid id)
         {
 	        try
 	        {
@@ -29,7 +29,7 @@ namespace Hackathon.Controllers
 		        {
 			        client.BaseAddress = new Uri("http://localhost:5000");
 			        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			        var response = client.GetAsync("/service/GetEngineService" + $"/{id}").Result;
+			        var response = client.GetAsync("/service/GetPrintingService" + $"/{id}").Result;
 			        string stringData = response.Content.ReadAsStringAsync().Result;
 			        var myDeserialized = (PrintingService)JsonConvert.DeserializeObject(stringData, typeof(PrintingService));
 			        return View(myDeserialized);

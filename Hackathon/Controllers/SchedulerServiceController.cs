@@ -50,13 +50,25 @@ namespace Hackathon.Controllers
 		// POST: SchedulerService/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Create(IFormCollection collection)
+		public async Task<ActionResult> Create(IFormCollection collection)
 		{
+			SchedulerService schedulerService = new SchedulerService(new ServiceCluster() { Name = collection["ServiceClusterName"], Id = Guid.Parse(collection["ServiceClusterId"]) }, collection["HostName"]);
+			schedulerService.ModifiedByUserName = collection["ModifiedByUserName"];
+			schedulerService.IdentifiedInternally = collection["IdentifiedInternally"].Contains("true");
+			schedulerService.HostName = collection["HostName"];
+			schedulerService.Settings = new SchedulerService.SchedulerServiceSettings()
+			{
+				EngineTimeout = Int32.Parse(collection["EngineTimeout"]),
+				MaxConcurrentEngines = Int32.Parse(collection["MaxConcurrentEngines"]),
+			};
 			try
 			{
-				// TODO: Add insert logic here
-
-				return RedirectToAction("Index");
+				using (HttpClient client = new HttpClient())
+				{
+					Uri requestUri = new Uri("http://localhost:5000/service/AddScheduler");
+					var res = await client.PostAsync(requestUri, new StringContent(JsonConvert.SerializeObject(schedulerService), System.Text.Encoding.UTF8, "application/json"));
+					return RedirectToAction("Index");
+				}
 			}
 			catch
 			{

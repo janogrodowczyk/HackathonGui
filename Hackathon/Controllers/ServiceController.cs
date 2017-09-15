@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Hackathon.Model;
 using Hackathon.Model.Services;
 using Microsoft.AspNetCore.Http;
@@ -33,16 +34,24 @@ namespace Hackathon.Controllers
 		}
 
         // GET: Service/Details/5
-        public ActionResult Details(Guid id)
+        public async Task<ActionResult> Details(Guid id)
         {
 	        using (HttpClient client = new HttpClient())
 	        {
 				client.BaseAddress = new Uri("http://localhost:5000");
 		        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-		        HttpResponseMessage response = client.GetAsync("/service/GetAllByType?serviceType=Engine&serviceType=Proxy&serviceType=Scheduler&serviceType=Engine&serviceType=AppMigration&serviceType=Printing").Result;
-		        string stringData = response.Content.ReadAsStringAsync().Result;
-		        var service =
-			        Helpers.ToServiceViewModel((List<dynamic>)JsonConvert.DeserializeObject(stringData, typeof(List<dynamic>))).FirstOrDefault(i => i.Id==id);
+		        List<ServiceViewModel> serviceViewModels = new List<ServiceViewModel>();
+				foreach (var type in new[] { "Engine", "Proxy", "Scheduler", "AppMigration", "Printing", "Repository" })
+				{
+					var response = await client.GetAsync($"/service/GetAllByType?serviceType={type}");
+					string stringData = response.Content.ReadAsStringAsync().Result;
+					serviceViewModels.AddRange(Helpers.ToServiceViewModel((List<dynamic>)JsonConvert.DeserializeObject(stringData, typeof(List<dynamic>))));
+					if (serviceViewModels.Count(i => i.Id==id)>0)
+					{
+						break;
+					}
+				}
+		        var service = serviceViewModels.FirstOrDefault(i =>i.Id==id);
 		        switch (service.ServiceType)
 		        {
 

@@ -90,13 +90,21 @@ namespace Hackathon.Controllers
         // POST: ServiceCluster/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Guid id, ServiceCluster serviceCluster)
         {
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+	            using (HttpClient client = new HttpClient())
+	            {
+		            client.BaseAddress = new Uri("http://localhost:5000");
+		            MediaTypeWithQualityHeaderValue contentType = new MediaTypeWithQualityHeaderValue("application/json");
+		            client.DefaultRequestHeaders.Accept.Add(contentType);
+		            var res = JsonConvert.SerializeObject(serviceCluster).ToString();
+					HttpResponseMessage response = client.PutAsync("/servicecluster/Update" + $"/{id}", new StringContent(JsonConvert.SerializeObject(serviceCluster), System.Text.Encoding.UTF8, "application/json")).Result;
+		            string stringData = response.Content.ReadAsStringAsync().Result;
+		            var myDeserialized = (ServiceCluster)JsonConvert.DeserializeObject(stringData, typeof(ServiceCluster));
+					return RedirectToAction("Index");
+				}
             }
             catch
             {
