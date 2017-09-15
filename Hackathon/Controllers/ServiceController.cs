@@ -13,37 +13,29 @@ using Newtonsoft.Json;
 
 namespace Hackathon.Controllers
 {
-    public class ServiceController : Controller
-    {
-        // GET: Service
-        public async System.Threading.Tasks.Task<ActionResult> Index()
-        {
-	        List<ServiceViewModel> serviceViewModels = new List<ServiceViewModel>();
-			using (HttpClient client = new HttpClient())
+	public class ServiceController : Controller
+	{
+		readonly HttpClient _client = new Client.Client().HttpClient();
+		// GET: Service
+		public async Task<ActionResult> Index()
+		{
+			List<ServiceViewModel> serviceViewModels = new List<ServiceViewModel>();
+			foreach (var type in new [] { "Engine", "Proxy", "Scheduler", "AppMigration", "Printing", "Repository" })
 			{
-				client.BaseAddress = new Uri("http://localhost:5000");
-				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-				foreach (var type in new [] { "Engine", "Proxy", "Scheduler", "AppMigration", "Printing", "Repository" })
-				{
-					var response = await client.GetAsync($"/service/GetAllByType?serviceType={type}");
-					string stringData = response.Content.ReadAsStringAsync().Result;
-					serviceViewModels.AddRange(Helpers.ToServiceViewModel((List<dynamic>)JsonConvert.DeserializeObject(stringData, typeof(List<dynamic>))));
-				}
-				return View(serviceViewModels);
+				var response = await _client.GetAsync($"/service/GetAllByType?serviceType={type}");
+				string stringData = response.Content.ReadAsStringAsync().Result;
+				serviceViewModels.AddRange(Helpers.ToServiceViewModel((List<dynamic>)JsonConvert.DeserializeObject(stringData, typeof(List<dynamic>))));
 			}
+			return View(serviceViewModels);
 		}
 
-        // GET: Service/Details/5
-        public async Task<ActionResult> Details(Guid id)
-        {
-	        using (HttpClient client = new HttpClient())
-	        {
-				client.BaseAddress = new Uri("http://localhost:5000");
-		        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-		        List<ServiceViewModel> serviceViewModels = new List<ServiceViewModel>();
+		// GET: Service/Details/5
+		public async Task<ActionResult> Details(Guid id)
+		{
+				List<ServiceViewModel> serviceViewModels = new List<ServiceViewModel>();
 				foreach (var type in new[] { "Engine", "Proxy", "Scheduler", "AppMigration", "Printing", "Repository" })
 				{
-					var response = await client.GetAsync($"/service/GetAllByType?serviceType={type}");
+					var response = await _client.GetAsync($"/service/GetAllByType?serviceType={type}");
 					string stringData = response.Content.ReadAsStringAsync().Result;
 					serviceViewModels.AddRange(Helpers.ToServiceViewModel((List<dynamic>)JsonConvert.DeserializeObject(stringData, typeof(List<dynamic>))));
 					if (serviceViewModels.Count(i => i.Id==id)>0)
@@ -51,9 +43,9 @@ namespace Hackathon.Controllers
 						break;
 					}
 				}
-		        var service = serviceViewModels.FirstOrDefault(i =>i.Id==id);
-		        switch (service.ServiceType)
-		        {
+				var service = serviceViewModels.FirstOrDefault(i =>i.Id==id);
+				switch (service.ServiceType)
+				{
 
 						case ServiceTypeEnum.Engine:
 							return RedirectToAction("Details", new RouteValueDictionary(
@@ -71,86 +63,78 @@ namespace Hackathon.Controllers
 						return RedirectToAction("Details", new RouteValueDictionary(
 							new { controller = "SchedulerService", action = "Details", id = service.Id }));
 				}
-			}
-            return View();
-        }
 
-        // GET: Service/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+			return View();
+		}
 
-        // POST: Service/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
+		// GET: Service/Create
+		public ActionResult Create()
+		{
+			return View();
+		}
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Service/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Service/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Service/Delete/5
-        public ActionResult Delete(Guid id)
-        {
-			using (HttpClient client = new HttpClient())
+		// POST: Service/Create
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Create(IFormCollection collection)
+		{
+			try
 			{
-				client.BaseAddress = new Uri("http://localhost:5000");
-				MediaTypeWithQualityHeaderValue contentType = new MediaTypeWithQualityHeaderValue("application/json");
-				client.DefaultRequestHeaders.Accept.Add(contentType);
-				HttpResponseMessage response = client.DeleteAsync("/service/delete" + $"/{id}").Result;
-				string stringData = response.Content.ReadAsStringAsync().Result;
-				var myDeserialized = (ServiceCluster)JsonConvert.DeserializeObject(stringData, typeof(ServiceCluster));
+				// TODO: Add insert logic here
+
 				return RedirectToAction("Index");
+			}
+			catch
+			{
+				return View();
 			}
 		}
 
-        // POST: Service/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
+		// GET: Service/Edit/5
+		public ActionResult Edit(int id)
+		{
+			return View();
+		}
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-    }
+		// POST: Service/Edit/5
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Edit(int id, IFormCollection collection)
+		{
+			try
+			{
+				// TODO: Add update logic here
+
+				return RedirectToAction("Index");
+			}
+			catch
+			{
+				return View();
+			}
+		}
+
+		// GET: Service/Delete/5
+		public ActionResult Delete(Guid id)
+		{
+			HttpResponseMessage response = _client.DeleteAsync("/service/delete" + $"/{id}").Result;
+			return RedirectToAction("Index");
+		}
+
+		// POST: Service/Delete/5
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Delete(int id, IFormCollection collection)
+		{
+			try
+			{
+				// TODO: Add delete logic here
+
+				return RedirectToAction("Index");
+			}
+			catch
+			{
+				return View();
+			}
+		}
+	}
 }

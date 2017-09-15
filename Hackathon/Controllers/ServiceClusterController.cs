@@ -13,23 +13,18 @@ namespace Hackathon.Controllers
 {
     public class ServiceClusterController : Controller
     {
-        // GET: ServiceCluster
-        public ActionResult Index()
+	    readonly HttpClient _client = new Client.Client().HttpClient();
+		// GET: ServiceCluster
+		public ActionResult Index()
         {
 	        var myDeserializedObjList = new List<ServiceCluster>();
 
 			try
 	        {
-		        using (HttpClient client = new HttpClient())
-		        {
-			        client.BaseAddress = new Uri("http://localhost:5000");
-			        MediaTypeWithQualityHeaderValue contentType = new MediaTypeWithQualityHeaderValue("application/json");
-			        client.DefaultRequestHeaders.Accept.Add(contentType);
-			        HttpResponseMessage response = client.GetAsync("/servicecluster/getall").Result;
-			        string stringData = response.Content.ReadAsStringAsync().Result;
-			        myDeserializedObjList =
-				        (List<ServiceCluster>) JsonConvert.DeserializeObject(stringData, typeof(List<ServiceCluster>));
-		        }
+			    HttpResponseMessage response = _client.GetAsync("/servicecluster/getall").Result;
+			    string stringData = response.Content.ReadAsStringAsync().Result;
+			    myDeserializedObjList =
+				    (List<ServiceCluster>) JsonConvert.DeserializeObject(stringData, typeof(List<ServiceCluster>));
 			}
 	        catch (Exception)
 	        {
@@ -41,16 +36,10 @@ namespace Hackathon.Controllers
         // GET: ServiceCluster/Details/5
         public ActionResult Details(string id)
         {
-			using (HttpClient client = new HttpClient())
-			{
-				client.BaseAddress = new Uri("http://localhost:5000");
-				MediaTypeWithQualityHeaderValue contentType = new MediaTypeWithQualityHeaderValue("application/json");
-				client.DefaultRequestHeaders.Accept.Add(contentType);
-				HttpResponseMessage response = client.GetAsync("/servicecluster/get" + $"/{id}").Result;
+				HttpResponseMessage response = _client.GetAsync("/servicecluster/get" + $"/{id}").Result;
 				string stringData = response.Content.ReadAsStringAsync().Result;
 				var myDeserialized = (ServiceCluster)JsonConvert.DeserializeObject(stringData, typeof(ServiceCluster));
 				return View(myDeserialized);
-			}
 		}
 
         // GET: ServiceCluster/Create
@@ -66,14 +55,10 @@ namespace Hackathon.Controllers
         {
             try
             {
-	            using (HttpClient client = new HttpClient())
-	            {
-		            serviceCluster.Id = Guid.NewGuid();
-		            Uri requestUri = new Uri("http://localhost:5000/ServiceCluster/add");
-		            serviceCluster.SharedFolderSettings.RootFolder = "C://whichever";
-		            HttpResponseMessage respon = await client.PostAsync(requestUri, new StringContent(JsonConvert.SerializeObject(serviceCluster), System.Text.Encoding.UTF8, "application/json"));
-					return RedirectToAction("Index");
-				}
+		        serviceCluster.Id = Guid.NewGuid();
+		        serviceCluster.SharedFolderSettings.RootFolder = "C://whichever";
+		        HttpResponseMessage respon = await _client.PostAsync("ServiceCluster/add", new StringContent(JsonConvert.SerializeObject(serviceCluster), System.Text.Encoding.UTF8, "application/json"));
+				return RedirectToAction("Index");
             }
             catch(Exception)
             {
@@ -94,17 +79,10 @@ namespace Hackathon.Controllers
         {
             try
             {
-	            using (HttpClient client = new HttpClient())
-	            {
-		            client.BaseAddress = new Uri("http://localhost:5000");
-		            MediaTypeWithQualityHeaderValue contentType = new MediaTypeWithQualityHeaderValue("application/json");
-		            client.DefaultRequestHeaders.Accept.Add(contentType);
-		            var res = JsonConvert.SerializeObject(serviceCluster).ToString();
-					HttpResponseMessage response = client.PutAsync("/servicecluster/Update" + $"/{id}", new StringContent(JsonConvert.SerializeObject(serviceCluster), System.Text.Encoding.UTF8, "application/json")).Result;
-		            string stringData = response.Content.ReadAsStringAsync().Result;
-		            var myDeserialized = (ServiceCluster)JsonConvert.DeserializeObject(stringData, typeof(ServiceCluster));
-					return RedirectToAction("Index");
-				}
+				HttpResponseMessage response = _client.PutAsync("/servicecluster/Update" + $"/{id}", new StringContent(JsonConvert.SerializeObject(serviceCluster), System.Text.Encoding.UTF8, "application/json")).Result;
+		        string stringData = response.Content.ReadAsStringAsync().Result;
+		        var myDeserialized = (ServiceCluster)JsonConvert.DeserializeObject(stringData, typeof(ServiceCluster));
+				return RedirectToAction("Index");
             }
             catch
             {
@@ -115,16 +93,10 @@ namespace Hackathon.Controllers
         // GET: ServiceCluster/Delete/5
         public ActionResult Delete(string id)
         {
-	        using (HttpClient client = new HttpClient())
-	        {
-		        client.BaseAddress = new Uri("http://localhost:5000");
-		        MediaTypeWithQualityHeaderValue contentType = new MediaTypeWithQualityHeaderValue("application/json");
-		        client.DefaultRequestHeaders.Accept.Add(contentType);
-		        HttpResponseMessage response = client.DeleteAsync("/servicecluster/delete" + $"/{id}").Result;
-				string stringData = response.Content.ReadAsStringAsync().Result;
-		        var myDeserialized = (ServiceCluster)JsonConvert.DeserializeObject(stringData, typeof(ServiceCluster));
-		        return RedirectToAction("Index");
-	        }
+		    HttpResponseMessage response = _client.DeleteAsync("/servicecluster/delete" + $"/{id}").Result;
+			string stringData = response.Content.ReadAsStringAsync().Result;
+		    var myDeserialized = (ServiceCluster)JsonConvert.DeserializeObject(stringData, typeof(ServiceCluster));
+		    return RedirectToAction("Index");
         }
 
         // POST: ServiceCluster/Delete/5
@@ -134,13 +106,7 @@ namespace Hackathon.Controllers
         {
             try
             {
-				using (HttpClient client = new HttpClient())
-	            {
-		            client.BaseAddress = new Uri("http://localhost:5000");
-		            MediaTypeWithQualityHeaderValue contentType = new MediaTypeWithQualityHeaderValue("application/json");
-		            client.DefaultRequestHeaders.Accept.Add(contentType);
-		            HttpResponseMessage response = client.DeleteAsync("/servicecluster/delete" + $"/{id}").Result;
-	            }
+		        HttpResponseMessage response = _client.DeleteAsync("/servicecluster/delete" + $"/{id}").Result;
 				return RedirectToAction("Index");
             }
             catch

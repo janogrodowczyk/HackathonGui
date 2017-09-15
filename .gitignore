@@ -1,0 +1,61 @@
+build/
+bin/
+.gradle/
+.idea/
+.vs/
+ipch/
+x64/
+obj/
+*.user
+*.inl
+*.trx
+Debug/
+coverage/
+*.suo
+output/
+*.orig
+*.inl.txt
+*.bin
+*.patch
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*.sln.cache
+*.ncrunchsolution
+*.ncrunchproject
+*.feature.cs
+*.iml
+.vs/
+.DS_Store
+Temp/
+/src/MomaReport/
+/VersionAssemblyInfo.cs
+/src/Modules/AuthenticationModule/packages/
+/src/packages/
+/src/.CodeGeneration/
+/src/QualitySystem.Consoles.1.2.0/
+*.generated.cs
+*.generated.json
+
+# --------------------------------------------------------------------------------------
+# Binary Artifacts
+# @owner Lars Andersson (laa)
+# --------------------------------------------------------------------------------------
+/BinaryArtifactsFor*.Number
+/Packages/
+/Package*
+
+/tools/Wix/
+/tools/TextTransform/
+/tools/CoverageConverter/
+/tools/OctopusConsole/
+/tools/SafeInstall/
+/tools/SignToolWrapper/
+/tools/NodeJs/
+
+/SystemDefinition/src/Versioning/VersionAssemblyInfo.cs
+*.$$$
+
+#Intermediate translation files should not be staged: <container-name>.<intermediate-id>.resx
+src/Proxy.Localization/*/*.*.resx
