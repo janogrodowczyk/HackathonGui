@@ -57,7 +57,7 @@ namespace Hackathon.Controllers
             {
 		        serviceCluster.Id = Guid.NewGuid();
 		        serviceCluster.SharedFolderSettings.RootFolder = "C://whichever";
-		        HttpResponseMessage respon = await _client.PostAsync("ServiceCluster/add", new StringContent(JsonConvert.SerializeObject(serviceCluster), System.Text.Encoding.UTF8, "application/json"));
+		        await _client.PostAsync("ServiceCluster/add", new StringContent(JsonConvert.SerializeObject(serviceCluster), System.Text.Encoding.UTF8, "application/json"));
 				return RedirectToAction("Index");
             }
             catch(Exception)
@@ -79,9 +79,7 @@ namespace Hackathon.Controllers
         {
             try
             {
-				HttpResponseMessage response = _client.PutAsync("/servicecluster/Update" + $"/{id}", new StringContent(JsonConvert.SerializeObject(serviceCluster), System.Text.Encoding.UTF8, "application/json")).Result;
-		        string stringData = response.Content.ReadAsStringAsync().Result;
-		        var myDeserialized = (ServiceCluster)JsonConvert.DeserializeObject(stringData, typeof(ServiceCluster));
+				_client.PutAsync("/servicecluster/Update" + $"/{id}", new StringContent(JsonConvert.SerializeObject(serviceCluster), System.Text.Encoding.UTF8, "application/json"));
 				return RedirectToAction("Index");
             }
             catch
@@ -93,9 +91,7 @@ namespace Hackathon.Controllers
         // GET: ServiceCluster/Delete/5
         public ActionResult Delete(string id)
         {
-		    HttpResponseMessage response = _client.DeleteAsync("/servicecluster/delete" + $"/{id}").Result;
-			string stringData = response.Content.ReadAsStringAsync().Result;
-		    var myDeserialized = (ServiceCluster)JsonConvert.DeserializeObject(stringData, typeof(ServiceCluster));
+		    _client.DeleteAsync("/servicecluster/delete" + $"/{id}");
 		    return RedirectToAction("Index");
         }
 
@@ -106,7 +102,7 @@ namespace Hackathon.Controllers
         {
             try
             {
-		        HttpResponseMessage response = _client.DeleteAsync("/servicecluster/delete" + $"/{id}").Result;
+		        _client.DeleteAsync("/servicecluster/delete" + $"/{id}");
 				return RedirectToAction("Index");
             }
             catch

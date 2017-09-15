@@ -13,8 +13,10 @@ namespace Hackathon.Controllers
 {
     public class ProxyServiceController : Controller
     {
-        // GET: ProxyService
-        public ActionResult Index()
+	    readonly HttpClient _client = new Client.Client().HttpClient();
+
+		// GET: ProxyService
+		public ActionResult Index()
         {
 			return RedirectToAction("Index", "Service");
 		}
@@ -24,15 +26,10 @@ namespace Hackathon.Controllers
         {
 			try
 			{
-				using (HttpClient client = new HttpClient())
-				{
-					client.BaseAddress = new Uri("http://localhost:5000");
-					client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-					var response = client.GetAsync("/service/GetProxyService" + $"/{id}").Result;
-					string stringData = response.Content.ReadAsStringAsync().Result;
-					var myDeserialized = (ProxyService)JsonConvert.DeserializeObject(stringData, typeof(ProxyService));
-					return View(myDeserialized);
-				}
+				var response = _client.GetAsync("/service/GetProxyService" + $"/{id}").Result;
+				string stringData = response.Content.ReadAsStringAsync().Result;
+				var myDeserialized = (ProxyService)JsonConvert.DeserializeObject(stringData, typeof(ProxyService));
+				return View(myDeserialized);
 			}
 			catch
 			{
@@ -73,12 +70,8 @@ namespace Hackathon.Controllers
 	        proxyService.IdentifiedInternally = collection["IdentifiedInternally"].Contains("true");
 	        try
 	        {
-		        using (HttpClient client = new HttpClient())
-		        {
-			        Uri requestUri = new Uri("http://localhost:5000/service/AddProxy");
-			        var res = await client.PostAsync(requestUri, new StringContent(JsonConvert.SerializeObject(proxyService), System.Text.Encoding.UTF8, "application/json"));
-			        return RedirectToAction("Index");
-		        }
+			    await _client.PostAsync("/service/AddProxy", new StringContent(JsonConvert.SerializeObject(proxyService), System.Text.Encoding.UTF8, "application/json"));
+			    return RedirectToAction("Index");
 	        }
 			catch
             {

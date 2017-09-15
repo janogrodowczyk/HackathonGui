@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Hackathon.Model;
 using Hackathon.Model.Services;
@@ -14,8 +12,9 @@ namespace Hackathon.Controllers
 {
     public class RepositoryServiceController : Controller
     {
-        // GET: RepositoryService
-        public ActionResult Index()
+	    readonly HttpClient _client = new Client.Client().HttpClient();
+		// GET: RepositoryService
+		public ActionResult Index()
         {
 			return RedirectToAction("Index", "Service");
 		}
@@ -25,15 +24,10 @@ namespace Hackathon.Controllers
         {
 			try
 			{
-				using (HttpClient client = new HttpClient())
-				{
-					client.BaseAddress = new Uri("http://localhost:5000");
-					client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-					var response = client.GetAsync("/service/GetRepositoryService" + $"/{id}").Result;
-					string stringData = response.Content.ReadAsStringAsync().Result;
-					var myDeserialized = (RepositoryService)JsonConvert.DeserializeObject(stringData, typeof(RepositoryService));
-					return View(myDeserialized);
-				}
+				var response = _client.GetAsync("/service/GetRepositoryService" + $"/{id}").Result;
+				string stringData = response.Content.ReadAsStringAsync().Result;
+				var myDeserialized = (RepositoryService)JsonConvert.DeserializeObject(stringData, typeof(RepositoryService));
+				return View(myDeserialized);
 			}
 			catch
 			{
@@ -64,12 +58,8 @@ namespace Hackathon.Controllers
 	        proxyService.IdentifiedInternally = collection["IdentifiedInternally"].Contains("true");
 	        try
 	        {
-		        using (HttpClient client = new HttpClient())
-		        {
-			        Uri requestUri = new Uri("http://localhost:5000/service/AddRepository");
-			        var res = await client.PostAsync(requestUri, new StringContent(JsonConvert.SerializeObject(proxyService), System.Text.Encoding.UTF8, "application/json"));
-			        return RedirectToAction("Index");
-		        }
+			    await _client.PostAsync("/service/AddRepository", new StringContent(JsonConvert.SerializeObject(proxyService), System.Text.Encoding.UTF8, "application/json"));
+			    return RedirectToAction("Index");
 	        }
 			catch
             {

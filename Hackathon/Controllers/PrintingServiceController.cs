@@ -14,8 +14,10 @@ namespace Hackathon.Controllers
 {
     public class PrintingServiceController : Controller
     {
-        // GET: PrintingService
-        public ActionResult Index()
+	    readonly HttpClient _client = new Client.Client().HttpClient();
+
+		// GET: PrintingService
+		public ActionResult Index()
         {
 			return RedirectToAction("Index", "Service");
 		}
@@ -25,15 +27,10 @@ namespace Hackathon.Controllers
         {
 	        try
 	        {
-		        using (HttpClient client = new HttpClient())
-		        {
-			        client.BaseAddress = new Uri("http://localhost:5000");
-			        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			        var response = client.GetAsync("/service/GetPrintingService" + $"/{id}").Result;
-			        string stringData = response.Content.ReadAsStringAsync().Result;
-			        var myDeserialized = (PrintingService)JsonConvert.DeserializeObject(stringData, typeof(PrintingService));
-			        return View(myDeserialized);
-		        }
+			    var response = _client.GetAsync("/service/GetPrintingService" + $"/{id}").Result;
+			    string stringData = response.Content.ReadAsStringAsync().Result;
+			    var myDeserialized = (PrintingService)JsonConvert.DeserializeObject(stringData, typeof(PrintingService));
+			    return View(myDeserialized);
 	        }
 	        catch
 	        {
@@ -58,14 +55,8 @@ namespace Hackathon.Controllers
 	        printingService.HostName = collection["HostName"];
 			try
             {
-	            using (HttpClient client = new HttpClient())
-	            {
-		            Uri requestUri = new Uri("http://localhost:5000/service/AddPrinting");
-					var hej = JsonConvert.SerializeObject(printingService);
-
-					var res = await client.PostAsync(requestUri, new StringContent(JsonConvert.SerializeObject(printingService), System.Text.Encoding.UTF8, "application/json"));
-		            return RedirectToAction("Index");
-	            }
+				await _client.PostAsync("/service/AddPrinting", new StringContent(JsonConvert.SerializeObject(printingService), System.Text.Encoding.UTF8, "application/json"));
+		        return RedirectToAction("Index");
 			}
             catch
             {

@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Hackathon.Model;
 using Hackathon.Model.Services;
@@ -14,6 +12,7 @@ namespace Hackathon.Controllers
 {
 	public class SchedulerServiceController : Controller
 	{
+		readonly HttpClient _client = new Client.Client().HttpClient();
 		// GET: SchedulerService
 		public ActionResult Index()
 		{
@@ -21,19 +20,14 @@ namespace Hackathon.Controllers
 		}
 
 		// GET: SchedulerService/Details/5
-		public ActionResult Details(int id)
+		public ActionResult Details(Guid id)
 		{
 			try
 			{
-				using (HttpClient client = new HttpClient())
-				{
-					client.BaseAddress = new Uri("http://localhost:5000");
-					client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-					var response = client.GetAsync("/service/GetSchedulerService" + $"/{id}").Result;
-					string stringData = response.Content.ReadAsStringAsync().Result;
-					var myDeserialized = (SchedulerService)JsonConvert.DeserializeObject(stringData, typeof(SchedulerService));
-					return View(myDeserialized);
-				}
+				var response = _client.GetAsync("/service/GetSchedulerService" + $"/{id}").Result;
+				string stringData = response.Content.ReadAsStringAsync().Result;
+				var myDeserialized = (SchedulerService)JsonConvert.DeserializeObject(stringData, typeof(SchedulerService));
+				return View(myDeserialized);
 			}
 			catch
 			{
@@ -63,12 +57,8 @@ namespace Hackathon.Controllers
 			};
 			try
 			{
-				using (HttpClient client = new HttpClient())
-				{
-					Uri requestUri = new Uri("http://localhost:5000/service/AddScheduler");
-					var res = await client.PostAsync(requestUri, new StringContent(JsonConvert.SerializeObject(schedulerService), System.Text.Encoding.UTF8, "application/json"));
-					return RedirectToAction("Index");
-				}
+				await _client.PostAsync("/service/AddScheduler", new StringContent(JsonConvert.SerializeObject(schedulerService), System.Text.Encoding.UTF8, "application/json"));
+				return RedirectToAction("Index");
 			}
 			catch
 			{
@@ -115,20 +105,14 @@ namespace Hackathon.Controllers
 			{ 
 				EngineTimeout = Int32.Parse(collection["EngineTimeout"]),
 				MaxConcurrentEngines = Int32.Parse(collection["MaxConcurrentEngines"])
-
-
 			};
 			proxyService.HostName = collection["HostName"];
 			proxyService.ModifiedByUserName = collection["ModifiedByUserName"];
 			proxyService.IdentifiedInternally = collection["IdentifiedInternally"].Contains("true");
 			try
 			{
-				using (HttpClient client = new HttpClient())
-				{
-					Uri requestUri = new Uri("http://localhost:5000/service/AddRepository");
-					var res = await client.PostAsync(requestUri, new StringContent(JsonConvert.SerializeObject(proxyService), System.Text.Encoding.UTF8, "application/json"));
-					return RedirectToAction("Index");
-				}
+				await _client.PostAsync("/service/AddRepository", new StringContent(JsonConvert.SerializeObject(proxyService), System.Text.Encoding.UTF8, "application/json"));
+				return RedirectToAction("Index");
 			}
 			catch
 			{
